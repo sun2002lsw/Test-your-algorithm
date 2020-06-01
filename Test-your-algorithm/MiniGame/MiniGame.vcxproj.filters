@@ -4,21 +4,13 @@
     <Filter Include="MiniGames">
       <UniqueIdentifier>{f34ede5d-14d0-483f-b7e9-8ebfd615e097}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MiniGames\DodgeMissile">
-      <UniqueIdentifier>{6f680531-4ab0-4b58-820e-5f71064595b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MiniGames\Blackjack">
-      <UniqueIdentifier>{072f0a86-8005-480f-a0e0-c53660504168}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MiniGames\Tetris">
-      <UniqueIdentifier>{7f5e735e-eafa-40d0-a6de-2ae844e21889}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="minigame.h" />
+    <ClInclude Include="minigameFactory.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="minigame.cpp" />
+    <ClCompile Include="minigameFactory.cpp" />
   </ItemGroup>
 </Project>

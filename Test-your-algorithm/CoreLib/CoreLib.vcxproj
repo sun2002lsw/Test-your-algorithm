@@ -166,6 +166,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="packet.h" />
+    <ClInclude Include="protocol.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

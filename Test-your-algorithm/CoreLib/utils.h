@@ -26,3 +26,12 @@ struct is_iterable<T, std::void_t<decltype(std::declval<T>().begin()), decltype(
 
 template <typename T>
 constexpr bool is_iterable_v = is_iterable<T>::value;
+
+/*
+	derived class instance creator for factory design pattern
+*/
+template<typename BaseClass, typename DerivedClass>
+struct InstanceCreator
+{
+	static BaseClass* CreateInstance() { return new DerivedClass; }
+};

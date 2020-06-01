@@ -1,6 +1,6 @@
 #pragma once
 #define _SILENCE_CXX17_OLD_ALLOCATOR_MEMBERS_DEPRECATION_WARNING
-#include "macro.h"
+#include "utils.h"
 #include "packet.h"
 #include <unordered_map>
 #include <concurrent_queue.h>
@@ -22,7 +22,7 @@ public:
 public:
 	MiniGame() = default;
 	virtual ~MiniGame() = default;
-	
+
 	void InsertUser(const UserUID& user) { userSet_.insert(user); }
 	void ProcessInputOutput();
 	void PushUserInputPacket(const UserUID& user, const Packet& packet);
@@ -31,11 +31,14 @@ public:
 	virtual bool IsFinish() = 0;
 
 protected:
-	virtual void HandleUserInput(const UserUID& user, const Packet& packet) = 0;
 	virtual void PlayGame() = 0;
+	virtual void HandleUserInput(const UserUID& user, const Packet& packet) = 0;
 	virtual bool UserStatusUpdate(const UserUID& user, const Packet& packet) = 0;
 
 	UserSet userSet_;
 	UserPacketQueue inputPacket_;
 	UserPacketQueue outputPacket_;
 };
+
+#define CREATE_MINI_GAME(gameName)	\
+	struct MiniGame_##gameName : MiniGame, InstanceCreator<MiniGame, MiniGame_##gameName>
