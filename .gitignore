@@ -34,4 +34,4 @@
 # visual studio auto create files
 /Test-your-algorithm/.vs
 /Test-your-algorithm/Binary
-/Test-your-algorithm/BuildLog
+/Test-your-algorithm/**/buildLog

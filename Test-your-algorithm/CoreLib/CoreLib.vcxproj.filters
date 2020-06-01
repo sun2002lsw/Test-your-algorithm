@@ -6,7 +6,8 @@
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="macro.h" />
-    <ClInclude Include="packet.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="packetBase.h" />
+    <ClInclude Include="packet.h" />
   </ItemGroup>
 </Project>
