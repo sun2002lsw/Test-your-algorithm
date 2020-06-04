@@ -1,13 +1,15 @@
 #include "minigameFactory.h"
 #include "protocol.h"
-#include "minigameList.h"
+#include "blackjack.h"
+#include "dodgeMissile.h"
 
-//#define REGISTER_MINI_GAME(gameName) \ 
-	//MiniGameRegister<MiniGameNumber::##gameName, MiniGame_##gameName>()
+#define REGISTER_MINI_GAME(gameName) \
+	MiniGameRegister<MiniGameNumber::##gameName, MiniGame_##gameName>()
 
 void MiniGameFactory::Setup()
 {
-	MiniGameRegister<MiniGameNumber::Blackjack, MiniGame_Blackjack>();
+	REGISTER_MINI_GAME(Blackjack);
+	REGISTER_MINI_GAME(DodgeMissile);
 }
 
 void MiniGameFactory::RegisterGame(const int gameNumber, std::function<MiniGame* ()> instanceCreateFunc)

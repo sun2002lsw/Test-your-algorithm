@@ -1,6 +1,8 @@
 #pragma once
+#include <corecrt_math_defines.h>
 #include <type_traits>
 #include <string>
+#include <random>
 
 /*
 	std::is_string does not seem to exist
@@ -35,3 +37,15 @@ struct InstanceCreator
 {
 	static BaseClass* CreateInstance() { return new DerivedClass; }
 };
+
+/*
+	random number generator
+*/
+int GetRandInt(int min, int max);
+double GetRandDouble(double min, double max);
+
+/*
+	degree & radian
+*/
+double DegreeToRadian(const double degree);
+double RadianToDegree(const double radian);

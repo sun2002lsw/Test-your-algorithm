@@ -8,9 +8,22 @@
   <ItemGroup>
     <ClInclude Include="minigame.h" />
     <ClInclude Include="minigameFactory.h" />
+    <ClInclude Include="blackjack.h">
+      <Filter>MiniGames</Filter>
+    </ClInclude>
+    <ClInclude Include="dodgeMissile.h">
+      <Filter>MiniGames</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="minigame.cpp" />
     <ClCompile Include="minigameFactory.cpp" />
+    <ClCompile Include="blackjack.cpp">
+      <Filter>MiniGames</Filter>
+    </ClCompile>
+    <ClCompile Include="dodgeMissile.cpp">
+      <Filter>MiniGames</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
 </Project>
