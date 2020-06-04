@@ -8,7 +8,7 @@
 template <size_t BUFFER_SIZE>
 class PacketBase
 {
-protected:
+public:
 	PacketBase() = default;
 	~PacketBase() = default;
 
@@ -71,7 +71,7 @@ template<typename T>
 PacketBase<BUFFER_SIZE>& PacketBase<BUFFER_SIZE>::operator<<(const T& val)
 {
 	if constexpr (is_iterable_v<T> == false)
-		InputValue(val);
+		WriteValue(val);
 	else // vector, list, map, ...
 	{
 		(*this) << val.size();
@@ -92,16 +92,15 @@ PacketBase<BUFFER_SIZE>& PacketBase<BUFFER_SIZE>::operator>>(T& val)
 	static_assert(is_iterable_v<T> == false, "you must extract (vector, list, map) value one by one");
 
 	// check buffer overflow
-	const unsigned short valSize = sizeof(T);
+	unsigned short valSize = sizeof(T);
 	if (rOffset_ + valSize > BUFFER_SIZE)
-	{
-		val = std::declval<T>();
-		return;
-	}
+		valSize = BUFFER_SIZE - rOffset_;
 
 	// read "val" from data buffer and increase offset
 	memcpy(&val, data_ + rOffset_, valSize);
 	rOffset_ += valSize;
+
+	return (*this);
 }
 
 /*

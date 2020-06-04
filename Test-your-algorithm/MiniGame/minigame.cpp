@@ -22,14 +22,14 @@ void MiniGame::ProcessInputOutput()
 
 	// get output
 	for (const auto& user : userSet_)
-		if (UserStatusUpdate(user, packet))
+		if (UserStatusUpdated(user, packet))
 			outputPacket_[user].push(packet);
 }
 
 /*
 	push just one input packet for one user
 */
-void MiniGame::PushUserInputPacket(const UserUID& user, const Packet& packet)
+void MiniGame::PushUserInputPacket(const UserUID& user, Packet& packet)
 {
 	inputPacket_[user].push(packet);
 }

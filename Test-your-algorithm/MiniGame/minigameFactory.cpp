@@ -17,5 +17,8 @@ void MiniGameFactory::RegisterGame(const int gameNumber, std::function<MiniGame*
 
 MiniGame* MiniGameFactory::CreateGameInstance(const int gameNumber)
 {
+	if (gameCreator_.find(gameNumber) == gameCreator_.end())
+		return nullptr;
+
 	return gameCreator_[gameNumber]();
 }

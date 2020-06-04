@@ -25,20 +25,20 @@ public:
 
 	void InsertUser(const UserUID& user) { userSet_.insert(user); }
 	void ProcessInputOutput();
-	void PushUserInputPacket(const UserUID& user, const Packet& packet);
+	void PushUserInputPacket(const UserUID& user, Packet& packet);
 	const UserOutputPacket PopUserOutputPacket();
 
+	virtual void Setup(Packet& packet) = 0;
 	virtual bool IsFinish() = 0;
 
 protected:
 	virtual void PlayGame() = 0;
-	virtual void HandleUserInput(const UserUID& user, const Packet& packet) = 0;
-	virtual bool UserStatusUpdate(const UserUID& user, const Packet& packet) = 0;
+	virtual void HandleUserInput(const UserUID& user, Packet& packet) = 0;
+	virtual bool UserStatusUpdated(const UserUID& user, Packet& packet) = 0;
 
 	UserSet userSet_;
+
+private:
 	UserPacketQueue inputPacket_;
 	UserPacketQueue outputPacket_;
 };
-
-#define CREATE_MINI_GAME(gameName)	\
-	struct MiniGame_##gameName : MiniGame, InstanceCreator<MiniGame, MiniGame_##gameName>
