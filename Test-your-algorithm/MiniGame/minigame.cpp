@@ -1,29 +1,47 @@
 #include "minigame.h"
 
 /*
+	insert new user;
+*/
+void MiniGame::InsertUser(const UserUID& user)
+{
+	std::lock_guard<std::mutex> lock(mutex_);
+	userSet_.insert(user);
+}
+
+/*
 	game play tick
 */
 void MiniGame::ProcessInputOutput()
 {
-	Packet packet;
+	std::lock_guard<std::mutex> lock(mutex_);
 
 	// handle input
-	for (auto& userPacketQueue : inputPacket_)
+	for (auto& inputPacket : inputPacket_)
 	{
-		const UserUID user = userPacketQueue.first;
-		PacketQueue& packetQueue = userPacketQueue.second;
+		const UserUID user = inputPacket.first;
+		if (userSet_.find(user) == userSet_.end())
+			continue;
 
-		if (packetQueue.try_pop(packet))
-			HandleUserInput(user, packet);
+		std::queue<Packet>& packetQueue = inputPacket.second;
+		while (packetQueue.size() > 0)
+		{
+			Packet& packet = packetQueue.front();
+			if (packet)
+				HandleUserInput(user, packet);
+
+			packetQueue.pop();
+		}
 	}
 
 	// play game
 	PlayGame();
 
-	// get output
+	// update user current status
+	Packet output;
 	for (const auto& user : userSet_)
-		if (UserStatusUpdated(user, packet))
-			outputPacket_[user].push(packet);
+		if (UserStatusUpdated(user, output))
+			outputPacket_[user] = output;
 }
 
 /*
@@ -31,25 +49,30 @@ void MiniGame::ProcessInputOutput()
 */
 void MiniGame::PushUserInputPacket(const UserUID& user, Packet& packet)
 {
+	std::lock_guard<std::mutex> lock(mutex_);
 	inputPacket_[user].push(packet);
 }
 
 /*
 	Get just one output packet for each user
 */
-const MiniGame::UserOutputPacket MiniGame::PopUserOutputPacket()
+std::unordered_map<MiniGame::UserUID, Packet> MiniGame::PopUserOutputPacket()
 {
-	UserOutputPacket outputPacket;
+	std::lock_guard<std::mutex> lock(mutex_);
 
-	for (auto& userOutputPacket : outputPacket_)
+	// get valid output packet
+	std::unordered_map<UserUID, Packet> output;
+	for (auto& outputPacket : outputPacket_)
 	{
-		const UserUID& user = userOutputPacket.first;
-		PacketQueue& packetQueue = userOutputPacket.second;
+		const UserUID user = outputPacket.first;
+		Packet& packet = outputPacket.second;
 
-		Packet packet;
-		if (packetQueue.try_pop(packet))
-			outputPacket[user] = packet;
+		if (packet)
+			output[user] = packet;
 	}
 
-	return outputPacket;
+	// clear output packet buffer
+	outputPacket_ = decltype(outputPacket_)();
+
+	return output;
 }
