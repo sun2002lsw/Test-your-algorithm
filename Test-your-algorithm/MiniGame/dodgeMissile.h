@@ -1,9 +1,11 @@
 #pragma once
 #include "minigame.h"
-#include <chrono>
+#include <atomic>
 
 class MiniGame_DodgeMissile final : public MiniGame, public InstanceCreator<MiniGame, MiniGame_DodgeMissile>
 {
+	using Clock = std::chrono::high_resolution_clock::time_point;
+
 public:
 	virtual void Setup(Packet& packet) override;
 	virtual bool IsFinish() override;
@@ -20,7 +22,7 @@ private:
 	class FlyingObject
 	{
 	public:
-		void Move();
+		bool Move();
 		bool IsCrashWithObject(const FlyingObject& obj);
 		bool IsOutOfBattleField(const BattleField& battleField);
 
@@ -30,8 +32,8 @@ private:
 		double GetCoordinate_Y() const { return curY_; }
 
 	protected:
-		double speed_, radianDir_, curX_, curY_;
-		std::chrono::high_resolution_clock::time_point lastClock_;
+		double speed_ = 0, radianDir_ = 0, curX_ = 0, curY_ = 0;
+		Clock lastClock_;
 	};
 
 	class Missile : public FlyingObject 
@@ -51,6 +53,8 @@ private:
 	{ 
 	public:
 		void Setup(const BattleField& battleField);
+		void Stop() { speed_ = 0; }
+		void SetClock(Clock lastClock) { lastClock_ = lastClock; }
 		void SetSpeed(const double speed) { speed_ = speed; }
 		void SetDirection(const double radian) { radianDir_ = radian; }
 		void SetCrashed() {	isCrashed_ = true; }

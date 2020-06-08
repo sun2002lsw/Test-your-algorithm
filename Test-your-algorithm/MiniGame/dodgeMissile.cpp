@@ -1,8 +1,10 @@
 #include "dodgeMissile.h"
+#include <chrono>
+#define CurrentClock std::chrono::high_resolution_clock::now()
 
-static constexpr double AIRCRAFT_SPEED = 30;
-static constexpr double MISSILE_MAX_SPEED = 50;
-static constexpr double MISSILE_MIN_SPEED = 10;
+static constexpr double AIRCRAFT_SPEED = 20;
+static constexpr double MISSILE_MAX_SPEED = 25;
+static constexpr double MISSILE_MIN_SPEED = 15;
 
 /*
 	create battleField, missiles, aircraft
@@ -10,7 +12,7 @@ static constexpr double MISSILE_MIN_SPEED = 10;
 void MiniGame_DodgeMissile::Setup(Packet& packet)
 {
 	// create battleField
-	packet >> battleField_.height_ >> battleField_.width_;
+	packet >> battleField_.width_ >> battleField_.height_;
 
 	// create missiles
 	short missileCnt;
@@ -38,7 +40,8 @@ void MiniGame_DodgeMissile::PlayGame()
 	// move missile
 	while (missile != MissileList_.end())
 	{
-		missile->Move();
+		if (missile->Move() == false)
+			continue;
 
 		if (missile->IsCrashWithObject(aircraft_))
 			aircraft_.SetCrashed();
@@ -60,7 +63,8 @@ void MiniGame_DodgeMissile::PlayGame()
 		return;
 
 	// move aircraft
-	aircraft_.Move();
+	if (aircraft_.Move())
+		aircraft_.Stop();
 	if (aircraft_.IsOutOfBattleField(battleField_))
 		aircraft_.SetCrashed();
 }
@@ -70,12 +74,16 @@ void MiniGame_DodgeMissile::PlayGame()
 */
 void MiniGame_DodgeMissile::HandleUserInput(const UserUID& user, Packet& packet)
 {
+	// ¡æ, ¢Ù, ¡é, ¢×, ¡ç, ¢Ø, ¡è, ¢Ö
 	short direction;
 	packet >> direction;
+	if (direction == -1)
+		return;
 
 	const double degree = 45 * direction;
 	const double radian = DegreeToRadian(degree);
 
+	aircraft_.SetClock(CurrentClock);
 	aircraft_.SetSpeed(AIRCRAFT_SPEED);
 	aircraft_.SetDirection(radian);
 }
@@ -107,23 +115,28 @@ void MiniGame_DodgeMissile::CreateMissileAtBattleField()
 /*
 	change coordinate by direction & speed
 */
-void MiniGame_DodgeMissile::FlyingObject::Move()
+bool MiniGame_DodgeMissile::FlyingObject::Move()
 {
-	const auto& currentClock = std::chrono::high_resolution_clock::now();
-	const auto& changedClock = currentClock - lastClock_;
-	const auto& millisec = std::chrono::duration_cast<std::chrono::milliseconds>(changedClock).count();
+	if (speed_ == 0)
+		return false;
 
-	const double moveDistance = speed_ * millisec / 1000;
+	const auto changedClock = CurrentClock - lastClock_;
+	const auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(changedClock).count();
+	if (millisec < 50)
+		return false;
+
+	const double moveDistance = speed_ * static_cast<double>(millisec) / 1000.0;
 
 	curX_ += moveDistance * cos(radianDir_);
 	curY_ += moveDistance * sin(radianDir_);
 
-	lastClock_ = currentClock;
+	lastClock_ = CurrentClock;
+	return true;
 }
 
 bool MiniGame_DodgeMissile::FlyingObject::IsCrashWithObject(const FlyingObject& obj)
 {
-	static constexpr double aircraftWingSize = 0.5;
+	static constexpr double aircraftWingSize = 1;
 
 	bool xCrash = abs(curX_ - obj.curX_) < aircraftWingSize;
 	bool yCrash = abs(curY_ - obj.curY_) < aircraftWingSize;
@@ -147,26 +160,28 @@ bool MiniGame_DodgeMissile::FlyingObject::IsOutOfBattleField(const BattleField& 
 */
 void MiniGame_DodgeMissile::Missile::Setup(const BattleField& battleField)
 {
-	speed_ = GetRandDouble(10, 50);
+	speed_ = GetRandDouble(MISSILE_MIN_SPEED, MISSILE_MAX_SPEED);
 
 	switch (GetRandInt(0, 3))
 	{
 	case 0:
 		StartAtTop(battleField);
-		return;
+		break;
 	case 1:
 		StartAtBottom(battleField);
-		return;
+		break;
 	case 2:
 		StartAtLeft(battleField);
-		return;
+		break;
 	case 3:
 		StartAtRight(battleField);
-		return;
+		break;
 	default:
 		StartAtCenter(battleField);
-		return;
+		break;
 	}
+
+	lastClock_ = CurrentClock;
 }
 
 void MiniGame_DodgeMissile::Missile::StartAtTop(const BattleField& battleField)

@@ -5,7 +5,7 @@
 /*
 	setup card deck
 */
-void MiniGame_Blackjack::Setup(Packet & packet)
+void MiniGame_Blackjack::Setup(Packet& packet)
 {
 	unsigned short deckCnt;
 	packet >> deckCnt;
@@ -46,14 +46,14 @@ void MiniGame_Blackjack::PlayGame()
 /*
 	hit, stay, split
 */
-void MiniGame_Blackjack::HandleUserInput(const UserUID & user, Packet & packet)
+void MiniGame_Blackjack::HandleUserInput(const UserUID& user, Packet& packet)
 {
 }
 
 /*
 	my card, dealer card, my money
 */
-bool MiniGame_Blackjack::UserStatusUpdated(const UserUID & user, Packet & packet)
+bool MiniGame_Blackjack::UserStatusUpdated(const UserUID& user, Packet& packet)
 {
 	// if (nothing has changed)
 		return false;
