@@ -12,10 +12,12 @@ public:
 	PacketBase() = default;
 	~PacketBase() = default;
 
+	void clear();
+
 	// getter setter
 	const char* Data()			const { return data_; }
 	const unsigned short Size() const { return size_; }
-	const bool IsValid()		const { return isValid_; }
+	const bool IsValid()		const { return size_ && !bufferOverflow_; }
 	const unsigned short GetReadOffset()  const { return rOffset_; }
 	const unsigned short GetWriteOffset() const { return wOffset_; }
 	void SetReadOffset(const unsigned short offset)  { return rOffset_ = offset; }
@@ -29,6 +31,9 @@ public:
 	template <size_t BUFFER_SIZE_rhs>
 	PacketBase operator+(const PacketBase<BUFFER_SIZE_rhs>& rhs);
 
+	// packet exist
+	operator bool();
+
 private:
 	template <typename T> 
 	void WriteValue(const T& val);
@@ -37,8 +42,16 @@ private:
 	unsigned short size_	= 0;	// packet size
 	unsigned short rOffset_ = 0;	// current packet offset to read
 	unsigned short wOffset_ = 0;	// current packet offset to write
-	bool isValid_			= true;	// check buffer overflow
+	bool bufferOverflow_	= false;// check buffer overflow
 };
+
+template<size_t BUFFER_SIZE>
+inline void PacketBase<BUFFER_SIZE>::clear()
+{
+	memset(data_, 0, BUFFER_SIZE);
+	size_ = rOffset_ = wOffset_ = 0;
+	bufferOverflow_ = false;
+}
 
 /*
 	write value to data buffer
@@ -51,7 +64,7 @@ void PacketBase<BUFFER_SIZE>::WriteValue(const T& val)
 	const unsigned short valSize = sizeof(T);
 	if (wOffset_ + valSize > BUFFER_SIZE)
 	{
-		isValid_ = false;
+		bufferOverflow_ = true;
 		return;
 	}
 
@@ -118,4 +131,10 @@ PacketBase<BUFFER_SIZE> PacketBase<BUFFER_SIZE>::operator+(const PacketBase<BUFF
 	newPacket << this->Data() << rhs.Data();
 
 	return newPacket;
+}
+
+template<size_t BUFFER_SIZE>
+inline PacketBase<BUFFER_SIZE>::operator bool()
+{
+	return IsValid();
 }
