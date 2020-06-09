@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CoreLib", "CoreLib\CoreLib.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MiniGame", "MiniGame\MiniGame.vcxproj", "{A42137EB-F061-4625-A545-20E01920A634}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DedicatedServer", "DedicatedServer\DedicatedServer.vcxproj", "{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{80B90D64-DE9B-4E9D-9E00-272DD4AECCC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,9 +35,21 @@ Global
 		{A42137EB-F061-4625-A545-20E01920A634}.Release|x64.Build.0 = Release|x64
 		{A42137EB-F061-4625-A545-20E01920A634}.Release|x86.ActiveCfg = Release|Win32
 		{A42137EB-F061-4625-A545-20E01920A634}.Release|x86.Build.0 = Release|Win32
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Debug|x64.ActiveCfg = Debug|x64
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Debug|x64.Build.0 = Debug|x64
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Debug|x86.ActiveCfg = Debug|Win32
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Debug|x86.Build.0 = Debug|Win32
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Release|x64.ActiveCfg = Release|x64
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Release|x64.Build.0 = Release|x64
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Release|x86.ActiveCfg = Release|Win32
+		{29B1BEE9-7769-41B2-8C75-8F1703F05D3F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FF46BA76-A04D-4EC5-8D26-28B1018EA65B} = {80B90D64-DE9B-4E9D-9E00-272DD4AECCC9}
+		{A42137EB-F061-4625-A545-20E01920A634} = {80B90D64-DE9B-4E9D-9E00-272DD4AECCC9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D6C39927-12BE-4E68-88C8-B6336F0005F8}
