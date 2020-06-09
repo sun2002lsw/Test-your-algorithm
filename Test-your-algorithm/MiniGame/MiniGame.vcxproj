@@ -25,18 +25,15 @@
     <ClInclude Include="dodgeMissile.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="blackjack.cpp" />
+    <ClCompile Include="dodgeMissile.cpp" />
+    <ClCompile Include="minigame.cpp" />
+    <ClCompile Include="minigameFactory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\CoreLib\CoreLib.vcxproj">
       <Project>{ff46ba76-a04d-4ec5-8d26-28b1018ea65b}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="blackjack.cpp" />
-    <ClCompile Include="dodgeMissile.cpp" />
-    <ClCompile Include="main.cpp">
-      <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DisableLanguageExtensions>
-    </ClCompile>
-    <ClCompile Include="minigame.cpp" />
-    <ClCompile Include="minigameFactory.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -60,13 +57,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -164,7 +161,7 @@
       <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>NotSet</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -24,6 +24,5 @@
     <ClCompile Include="dodgeMissile.cpp">
       <Filter>MiniGames</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
 </Project>

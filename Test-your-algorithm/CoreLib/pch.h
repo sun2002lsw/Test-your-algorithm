@@ -10,5 +10,6 @@
 // 여기에 미리 컴파일하려는 헤더 추가
 #include "utils.h"
 #include "packet.h"
+#include "packetBase.h"
 
 #endif //PCH_H

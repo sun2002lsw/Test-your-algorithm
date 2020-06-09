@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include "utils.h"
+#pragma pack(push, 1)
 
 /*
 	TCP/IP packet
@@ -138,3 +139,5 @@ inline PacketBase<BUFFER_SIZE>::operator bool()
 {
 	return IsValid();
 }
+
+#pragma pack(pop)

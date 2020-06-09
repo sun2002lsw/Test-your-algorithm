@@ -16,7 +16,7 @@ public:
 private:
 	struct BattleField
 	{
-		unsigned short height_, width_;
+		unsigned short height_ = 0, width_ = 0;
 	};
 
 	class FlyingObject

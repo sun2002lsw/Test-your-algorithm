@@ -1,4 +1,5 @@
 #pragma once
+#pragma pack(push, 1)
 
 enum MiniGameNumber
 {
@@ -6,3 +7,5 @@ enum MiniGameNumber
 	DodgeMissile,
 	Tetris,
 };
+
+#pragma pack(pop)
